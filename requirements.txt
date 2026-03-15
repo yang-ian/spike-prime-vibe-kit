@@ -1,0 +1,3 @@
+# The current tooling uses Python's standard library only.
+# This file exists so the setup scripts have a stable place to install
+# future dependencies without changing the bootstrap commands.

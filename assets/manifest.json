@@ -1,0 +1,23 @@
+{
+    "type": "python",
+    "appType": "llsp3",
+    "autoDelete": false,
+    "created": "2026-03-15T00:00:00.000Z",
+    "id": "SpkVibeKit001",
+    "lastsaved": "2026-03-15T00:00:00.000Z",
+    "size": 0,
+    "name": "SPIKE Prime Vibe Kit",
+    "slotIndex": 0,
+    "workspaceX": 0,
+    "workspaceY": 0,
+    "zoomLevel": 0.5,
+    "hardware": {
+        "python": {
+            "type": "flipper"
+        }
+    },
+    "state": {
+        "canvasDrawerOpen": true
+    },
+    "extraFiles": []
+}

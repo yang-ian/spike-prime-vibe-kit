@@ -1,0 +1,16 @@
+{
+    "entrypoint": "src/main.py",
+    "source_root": "src",
+    "manifest_file": "assets/manifest.json",
+    "icon_file": "assets/icon.svg",
+    "build_dir": "build",
+    "dist_file": "dist/spike-prime-vibe-kit.llsp3",
+    "hub": {
+        "transport": "macos_helper",
+        "default_slot": 0,
+        "auto_stop_before_start": true,
+        "target_name": "My SPIKE Hub",
+        "device_uuid": "",
+        "bt_address": ""
+    }
+}

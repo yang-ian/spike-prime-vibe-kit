@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>dev.ian.spikeprime.blehelper</string>
+    <key>CFBundleExecutable</key>
+    <string>spike_ble_helper</string>
+    <key>CFBundleName</key>
+    <string>SPIKE BLE Helper</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>This LEGO SPIKE Prime project uses Bluetooth to discover the Hub, upload Python code, and start programs directly from the development tools.</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>This LEGO SPIKE Prime project uses Bluetooth to discover the Hub, upload Python code, and start programs directly from the development tools.</string>
+</dict>
+</plist>
