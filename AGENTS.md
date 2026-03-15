@@ -25,8 +25,27 @@ Use 4-space indentation and straightforward Python. Favor simple control flow, d
 
 Keep beginner-facing examples small. If you add a more advanced example, keep the default starter path easy to understand and safe to run.
 
+## Product Positioning
+This repo is PyCharm-first. Treat PyCharm as the main recommended editor and `SPIKE Start` / `SPIKE Stop` as the primary child-friendly controls.
+
+The main user-facing story is:
+
+- edit in PyCharm
+- start one Bluetooth session
+- save files in `src/`
+- hot reload on the Hub over Bluetooth
+
+Keep `.llsp3` generation available, but present it as a fallback workflow rather than the primary development path.
+
 ## Bluetooth Workflow Expectations
-The preferred fast-feedback workflow is direct Bluetooth upload on macOS. The watcher should keep a long-lived BLE session open during a coding session, and it should shut down cleanly when the user stops the watcher from PyCharm or the terminal.
+Bluetooth on macOS is a headline feature of this project. Preserve clear support for:
+
+- direct upload
+- long-lived watch sessions
+- save-triggered hot reload
+- clean stop and disconnect behavior
+
+The watcher should keep a long-lived BLE session open during a coding session, and it should shut down cleanly when the user stops the watcher from PyCharm or the terminal.
 
 The public template config must stay sanitized:
 
@@ -37,7 +56,7 @@ The public template config must stay sanitized:
 Never commit personal Hub names, UUIDs, or Bluetooth addresses.
 
 ## Documentation Maintenance
-If you change the project structure, setup steps, build flow, Bluetooth workflow, or user-facing defaults, update both `README.md` and `AGENTS.md` in the same change.
+If you change the project structure, setup steps, build flow, Bluetooth workflow, hot reload behavior, or user-facing defaults, update both `README.md` and `AGENTS.md` in the same change.
 
 ## Testing Guidelines
 At minimum, validate:

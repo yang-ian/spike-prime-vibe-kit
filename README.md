@@ -1,11 +1,22 @@
 # SPIKE Prime Vibe Kit
 
-SPIKE Prime Vibe Kit is an open-source starter project for families, classrooms, and young makers who want to write LEGO SPIKE Prime Python code in a real editor such as PyCharm, then either:
+SPIKE Prime Vibe Kit is a **PyCharm-first LEGO SPIKE Prime starter kit** for families, classrooms, and young makers.
 
-- build an `.llsp3` file for the official LEGO SPIKE app
-- or upload code directly to a Hub over Bluetooth on macOS
+The main workflow is simple:
 
-The project is designed for AI-assisted learning. The code stays in normal Python files, and the tooling handles the LEGO packaging work for you.
+1. open the project in PyCharm
+2. click `SPIKE Start`
+3. edit Python in `src/`
+4. save the file
+5. watch the Hub hot reload over Bluetooth on macOS
+
+If you prefer the official LEGO SPIKE app, the repo can still build a normal `.llsp3` package as a fallback.
+
+## Best For
+
+- parents teaching children with real Python files
+- kids learning Python with AI tools such as Codex or Claude Code
+- fast SPIKE Prime iteration in PyCharm instead of editing embedded code strings
 
 ## Why This Project Exists
 
@@ -13,17 +24,29 @@ The official SPIKE app is friendly, but it is not ideal for larger editing workf
 
 - write code in a full editor
 - keep source code in regular `.py` files
-- rebuild a runnable SPIKE package automatically
-- teach children with clear, commented Python
-- use AI coding tools without hiding the project structure
+- use PyCharm as the main coding experience
+- rebuild and upload code automatically
+- keep the code readable and heavily commented for beginners
 
-## Features
+## Main Features
 
-- Normal Python source files in `src/`
-- Automatic `.llsp3` package generation
-- macOS Bluetooth upload workflow for fast iteration
-- PyCharm-friendly start and stop run configurations
-- A tiny beginner starter example that shows `HI` on the Hub
+- PyCharm-first workflow
+- direct Bluetooth upload to the Hub on macOS
+- save-to-run hot reload during an active watch session
+- normal `.llsp3` package generation for the official SPIKE app
+- shared `SPIKE Start` and `SPIKE Stop` run configurations
+- a tiny beginner starter example that shows `HI` on the Hub
+
+## What “Hot Reload” Means Here
+
+In this project, hot reload means:
+
+- you save a Python file in `src/`
+- the watcher rebuilds the SPIKE project automatically
+- the latest code is uploaded to the Hub automatically
+- the Hub program is restarted automatically
+
+This is not in-process code patching. It is a fast save -> rebuild -> upload -> restart loop designed for SPIKE Prime development.
 
 ## Platform Support
 
@@ -32,28 +55,12 @@ The official SPIKE app is friendly, but it is not ideal for larger editing workf
 | Edit Python source | Yes | Yes | Yes |
 | Build `.llsp3` package | Yes | Yes | Yes |
 | Import `.llsp3` into LEGO SPIKE app | Yes | Yes | Yes |
-| Direct Bluetooth upload to Hub | Yes | No | No |
+| Direct Bluetooth upload | Yes | No | No |
+| Save-triggered hot reload | Yes | No | No |
 
-The direct Bluetooth uploader is macOS-only because it uses a native Swift helper app.
+Direct Bluetooth upload and hot reload are macOS-only because they use the included native Swift helper app.
 
-## Project Layout
-
-- `src/`: editable Python source files
-- `assets/`: SPIKE metadata such as `manifest.json` and `icon.svg`
-- `tools/`: build, watch, upload, and helper scripts
-- `build/`: generated intermediate files
-- `dist/`: generated `.llsp3` package
-
-Do not edit `build/` or `dist/` by hand.
-
-## Requirements
-
-- Python 3.9 or newer
-- macOS if you want direct Bluetooth upload
-- Xcode Command Line Tools on macOS for the Bluetooth helper build
-- LEGO SPIKE Prime Hub and the official SPIKE firmware
-
-## Quick Start
+## Quick Start: Recommended PyCharm Workflow
 
 ### 1. Clone the repository
 
@@ -78,7 +85,86 @@ On Windows PowerShell:
 .\.venv\Scripts\Activate.ps1
 ```
 
-## Build an `.llsp3` Package
+### 3. Open the repo in PyCharm
+
+This repo includes shared run configurations:
+
+- `SPIKE Start`
+- `SPIKE Stop`
+
+### 4. Configure your Hub name
+
+Open `spike-build.json` and set:
+
+```json
+"target_name": "My SPIKE Hub"
+```
+
+Replace that value with the Bluetooth name shown by macOS for your Hub.
+
+You can leave `device_uuid` empty on the first run. The tool caches it after a successful connection.
+
+### 5. Start the Bluetooth session
+
+Close the LEGO SPIKE app first, then run `SPIKE Start` in PyCharm.
+
+That starts a long-lived Bluetooth session and enables hot reload.
+
+### 6. Edit and save
+
+Edit `src/main.py`, save the file, and the Hub should rebuild, re-upload, and restart automatically over Bluetooth.
+
+### 7. Stop cleanly
+
+Use either:
+
+- PyCharm's red Stop button on the running `SPIKE Start` session
+- the shared `SPIKE Stop` run configuration
+- `python3 tools/stop_hub.py --shutdown-session`
+
+## Bluetooth Support on macOS
+
+Bluetooth is a headline feature of this repo, not an afterthought.
+
+The macOS workflow supports:
+
+- one-time direct upload with `python3 tools/push_to_hub.py`
+- long-lived watch sessions with `python3 tools/watch_and_run_hub.py`
+- save-triggered hot reload during the session
+- clean stop and disconnect behavior
+
+The uploader uses the included Swift helper app because raw command-line Python BLE access is unreliable on this macOS setup.
+
+### Bluetooth setup checklist
+
+1. Pair the Hub with macOS
+2. Make sure the Hub is powered on
+3. Set the correct `hub.target_name` in `spike-build.json`
+4. Close the LEGO SPIKE app
+5. Start `SPIKE Start` in PyCharm or run `python3 tools/watch_and_run_hub.py`
+
+## PyCharm Workflow Details
+
+PyCharm is the recommended editor for this repo.
+
+Why PyCharm is the main path:
+
+- it is easier for children to see real files and folders
+- it makes AI-assisted coding easier to follow
+- the shared Start/Stop buttons reduce terminal friction
+- the hot reload loop feels much closer to a real programming environment
+
+Recommended classroom flow:
+
+1. open the repo in PyCharm
+2. click `SPIKE Start`
+3. edit code in `src/`
+4. save to hot reload on the Hub
+5. click Stop when the lesson is finished
+
+## Fallback Workflow: Build an `.llsp3` Package
+
+If you want to stay with the official LEGO SPIKE app workflow, this repo still supports it.
 
 Build once:
 
@@ -86,13 +172,13 @@ Build once:
 python3 tools/build_llsp3.py
 ```
 
-Watch `src/` and rebuild automatically:
+Watch and rebuild automatically:
 
 ```bash
 python3 tools/watch_llsp3.py
 ```
 
-Validate the generated files:
+Validate the generated package:
 
 ```bash
 python3 -m json.tool build/projectbody.json
@@ -102,80 +188,17 @@ unzip -l dist/spike-prime-vibe-kit.llsp3
 
 Then import `dist/spike-prime-vibe-kit.llsp3` into the official LEGO SPIKE app.
 
-## Direct Bluetooth Workflow on macOS
+This fallback path is useful for users who are not on macOS or who prefer the official app import flow.
 
-This workflow is faster than repeated manual imports into the SPIKE app.
+## Project Layout
 
-### 1. Pair your Hub with macOS
+- `src/`: editable Python source files
+- `assets/`: SPIKE metadata such as `manifest.json` and `icon.svg`
+- `tools/`: build, watch, upload, and helper scripts
+- `build/`: generated intermediate files
+- `dist/`: generated `.llsp3` package
 
-Make sure the Hub is powered on and visible to macOS before you try the uploader.
-
-### 2. Update `spike-build.json`
-
-Set the Hub name to match the name shown by macOS.
-
-Example:
-
-```json
-"hub": {
-    "transport": "macos_helper",
-    "default_slot": 0,
-    "auto_stop_before_start": true,
-    "target_name": "My SPIKE Hub",
-    "device_uuid": "",
-    "bt_address": ""
-}
-```
-
-You can leave `device_uuid` empty on the first run. The tool caches it after a successful connection.
-
-### 3. Close the LEGO SPIKE app
-
-Do not keep the LEGO SPIKE app connected while using the direct uploader.
-
-### 4. Upload once
-
-```bash
-python3 tools/push_to_hub.py
-```
-
-### 5. Start a watch session
-
-```bash
-python3 tools/watch_and_run_hub.py
-```
-
-Once that session is running, every save in `src/` uploads the latest code to the Hub over the same Bluetooth session.
-
-Stop the running program:
-
-```bash
-python3 tools/stop_hub.py
-```
-
-Stop the program and disconnect the long-lived Bluetooth session:
-
-```bash
-python3 tools/stop_hub.py --shutdown-session
-```
-
-## PyCharm Workflow
-
-You can use PyCharm as the main editor for this project.
-
-Shared run configurations are included:
-
-- `SPIKE Start`: start the Bluetooth watch-and-run session
-- `SPIKE Stop`: stop the Hub program and disconnect the session
-
-Recommended classroom flow:
-
-1. Open the repo in PyCharm
-2. Run `SPIKE Start`
-3. Edit `src/main.py`
-4. Save changes
-5. Watch the Hub update
-6. Click PyCharm's red Stop button when done
+Do not edit `build/` or `dist/` by hand.
 
 ## The Starter Example
 
@@ -187,47 +210,36 @@ It only does one thing:
 
 That makes it safe for first-time users. Once the toolchain is working, you can replace the file with motors, sensors, sounds, animations, or your own robot project.
 
-## Typical First Changes
-
-- Replace `HI` with your own message
-- Add motor control in `src/main.py`
-- Split code into helper modules under `src/`
-- Change the package name in `assets/manifest.json`
-- Change the output file name in `spike-build.json`
-
 ## Troubleshooting
 
 ### The Bluetooth uploader cannot find my Hub
 
-- Make sure the Hub is powered on
-- Make sure the Hub name in `spike-build.json` matches macOS
-- Close the LEGO SPIKE app
-- Try `python3 tools/push_to_hub.py` first before using the watcher
+- make sure the Hub is powered on
+- make sure the Hub name in `spike-build.json` matches macOS
+- close the LEGO SPIKE app
+- try `python3 tools/push_to_hub.py` first before using the watcher
+
+### Hot reload is not working
+
+- make sure `SPIKE Start` is still running
+- make sure you are editing files inside `src/`
+- make sure the Bluetooth session is not blocked by the LEGO SPIKE app
+- try restarting the watcher
 
 ### Python crashes when scanning Bluetooth
 
 This repo avoids that macOS problem by using a native Swift helper app. Use the provided scripts instead of trying to replace the uploader with raw Python BLE code.
 
-### My `.llsp3` file does not update
+### I want to use the official SPIKE app instead
 
-- Make sure you edited files inside `src/`
-- Re-run `python3 tools/build_llsp3.py`
-- Validate `build/projectbody.json`
-
-### PyCharm stop does not disconnect the Hub
-
-Use the shared `SPIKE Stop` run configuration or run:
-
-```bash
-python3 tools/stop_hub.py --shutdown-session
-```
+Use the `.llsp3` fallback workflow with `python3 tools/build_llsp3.py` or `python3 tools/watch_llsp3.py`.
 
 ## Development Notes
 
-- Keep code in `src/`
-- Keep comments beginner-friendly
-- Prefer explicit code over clever shortcuts
-- Treat this project as a learning template first and a robot project second
+- keep code in `src/`
+- keep comments beginner-friendly
+- prefer explicit code over clever shortcuts
+- treat this project as a learning template first and a robot project second
 
 ## License
 
