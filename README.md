@@ -92,6 +92,10 @@ This repo includes shared run configurations:
 - `SPIKE Start`
 - `SPIKE Stop`
 
+The `SPIKE Start` button in PyCharm looks like this:
+
+![PyCharm SPIKE Start button](docs/images/pycharm-spike-start-button.png)
+
 ### 4. Configure your Hub name
 
 Open `spike-build.json` and set:
